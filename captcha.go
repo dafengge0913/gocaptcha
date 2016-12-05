@@ -2,9 +2,11 @@ package gocaptcha
 
 import (
 	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/draw"
 	"golang.org/x/image/font"
 	"golang.org/x/image/math/fixed"
 	"image"
+	"image/color"
 	"io/ioutil"
 )
 
@@ -12,6 +14,13 @@ var fontFile = "arial.ttf"
 
 func CreatePng(data string, size, dpi, width, height int) (image.Image, error) {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	bgColor := color.RGBA{
+		R: 250,
+		G: 250,
+		B: 240,
+		A: 255,
+	}
+	draw.Draw(img, img.Bounds(), &image.Uniform{bgColor}, image.ZP, draw.Src)
 	fontBytes, err := ioutil.ReadFile(fontFile)
 	if err != nil {
 		return nil, err
@@ -26,7 +35,7 @@ func CreatePng(data string, size, dpi, width, height int) (image.Image, error) {
 		Face: truetype.NewFace(f, &truetype.Options{
 			Size:    float64(size),
 			DPI:     float64(dpi),
-			Hinting: font.HintingNone,
+			Hinting: font.HintingFull,
 		}),
 	}
 	y := (height + size) / 2
