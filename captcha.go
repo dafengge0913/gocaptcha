@@ -10,9 +10,7 @@ import (
 	"io/ioutil"
 )
 
-var fontFile = "arial.ttf"
-
-func CreatePng(data string, size, dpi, width, height int) (image.Image, error) {
+func CreatePng(fontFile, data string, size, dpi, width, height int) (image.Image, error) {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
 	bgColor := color.RGBA{
 		R: 250,

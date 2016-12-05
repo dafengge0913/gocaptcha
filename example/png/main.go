@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	img, err := gocaptcha.CreatePng("hello 0913", 12, 72, 100, 30)
+	img, err := gocaptcha.CreatePng("example/arial.ttf", "hello 0913", 14, 72, 100, 30)
 	if err != nil {
 		fmt.Println("create error :", err)
 		return
