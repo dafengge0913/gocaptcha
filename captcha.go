@@ -23,7 +23,7 @@ var random = rand.New(rand.NewSource(time.Now().Unix() + 123569))
 
 func CreatePng(fontFile, data string, size, dpi, width, height int) (image.Image, error) {
 	img := image.NewRGBA(image.Rect(0, 0, width, height))
-	draw.Draw(img, img.Bounds(), getUniform(RandomBGColor()), image.ZP, draw.Src)
+	draw.Draw(img, img.Bounds(), image.NewUniform(RandomBGColor()), image.ZP, draw.Src)
 	fontBytes, err := ioutil.ReadFile(fontFile)
 	if err != nil {
 		return nil, err
@@ -48,17 +48,13 @@ func CreatePng(fontFile, data string, size, dpi, width, height int) (image.Image
 	}
 	for _, c := range data {
 		d.DrawString(string(c))
-		d.Src = getUniform(RandomFGColor())
+		d.Src = image.NewUniform((RandomFGColor()))
 	}
 	if err != nil {
 		return nil, err
 	}
 	return img, nil
 
-}
-
-func getUniform(c color.Color) *image.Uniform {
-	return &image.Uniform{C: c}
 }
 
 func RandomFGColor() color.Color {
