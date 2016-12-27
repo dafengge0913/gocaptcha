@@ -5,10 +5,11 @@ import (
 	"github.com/dafengge0913/gocaptcha"
 	"image/png"
 	"os"
+	"strconv"
 )
 
 func main() {
-	img, err := gocaptcha.CreatePng("example/arial.ttf", "9527", 40, 72, 100, 50)
+	img, err := gocaptcha.CreatePng("example/arial.ttf", strconv.Itoa(gocaptcha.RandomNum(1000, 9999)), 40, 72, 100, 50)
 	if err != nil {
 		fmt.Println("create error :", err)
 		return

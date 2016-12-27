@@ -71,12 +71,12 @@ func CreatePng(fontFile, data string, size, dpi, width, height int) (image.Image
 }
 
 //s:start e:end
-func randomNum(s, e int) int {
+func RandomNum(s, e int) int {
 	return s + random.Intn(e-s)
 }
 
 func randomColorNum(s, e int) uint8 {
-	return uint8(randomNum(s, e))
+	return uint8(RandomNum(s, e))
 }
 
 func randomFGColor() color.Color {
@@ -100,16 +100,16 @@ func randomBGColor() color.Color {
 }
 
 func randomFontSize(baseSize int) float64 {
-	return float64(baseSize - FONT_SIZE_DRIFT_DECREASE + randomNum(0, FONT_SIZE_DRIFT_DECREASE+FONT_SIZE_DRIFT_INCREASE))
+	return float64(baseSize - FONT_SIZE_DRIFT_DECREASE + RandomNum(0, FONT_SIZE_DRIFT_DECREASE+FONT_SIZE_DRIFT_INCREASE))
 }
 
 func randomInterLinePos(width, height int) (int, int, int, int) {
 	x := width * INTERFERENCE_LINE_X_SCALE / 100
 	y := height * INTERFERENCE_LINE_Y_SCALE / 100
-	x1 := randomNum(0, x)
-	y1 := randomNum(y, height-y)
-	x2 := randomNum(width-x, width)
-	y2 := randomNum(y, height-y)
+	x1 := RandomNum(0, x)
+	y1 := RandomNum(y, height-y)
+	x2 := RandomNum(width-x, width)
+	y2 := RandomNum(y, height-y)
 	return x1, y1, x2, y2
 }
 
