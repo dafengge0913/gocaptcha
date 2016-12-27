@@ -14,12 +14,14 @@ import (
 
 //TODO Configurable
 const (
-	COLOR_FG_START           = 0 //foreground
-	COLOR_FG_END             = 150
-	COLOR_BG_START           = 200 //background
-	COLOR_BG_END             = 255
-	FONT_SIZE_DRIFT_DECREASE = 3 // actual_size >= base_size - FONT_SIZE_DRIFT_DECREASE
-	FONT_SIZE_DRIFT_INCREASE = 5 // actual_size <= base_size + FONT_SIZE_DRIFT_INCREASE
+	COLOR_FG_START            = 0 //foreground
+	COLOR_FG_END              = 150
+	COLOR_BG_START            = 200 //background
+	COLOR_BG_END              = 255
+	FONT_SIZE_DRIFT_DECREASE  = 3  // actual_size >= base_size - FONT_SIZE_DRIFT_DECREASE
+	FONT_SIZE_DRIFT_INCREASE  = 5  // actual_size <= base_size + FONT_SIZE_DRIFT_INCREASE
+	INTERFERENCE_LINE_X_SCALE = 10 //percentage
+	INTERFERENCE_LINE_Y_SCALE = 5
 )
 
 var random = rand.New(rand.NewSource(time.Now().Unix() + 123569))
@@ -59,6 +61,10 @@ func CreatePng(fontFile, data string, size, dpi, width, height int) (image.Image
 	if err != nil {
 		return nil, err
 	}
+	for i := 0; i < 10; i++ {
+		x1, y1, x2, y2 := randomInterLinePos(width, height)
+		drawLine(img, randomFGColor(), x1, y1, x2, y2)
+	}
 	return img, nil
 
 }
@@ -94,4 +100,23 @@ func randomBGColor() color.Color {
 
 func randomFontSize(baseSize int) float64 {
 	return float64(baseSize - FONT_SIZE_DRIFT_DECREASE + randomNum(0, FONT_SIZE_DRIFT_DECREASE+FONT_SIZE_DRIFT_INCREASE))
+}
+
+func randomInterLinePos(width, height int) (int, int, int, int) {
+	x := width * INTERFERENCE_LINE_X_SCALE / 100
+	y := height * INTERFERENCE_LINE_Y_SCALE / 100
+	x1 := randomNum(0, x)
+	y1 := randomNum(y, height-y)
+	x2 := randomNum(width-x, width)
+	y2 := randomNum(y, height-y)
+	return x1, y1, x2, y2
+}
+
+func drawLine(img *image.RGBA, c color.Color, startX, startY, endX, endY int) {
+	slope := float32(endY-startY) / float32(endX-startX)
+	y := float32(startY)
+	for x := startX; x <= endX; x++ {
+		img.Set(x, int(y), c)
+		y = y + slope
+	}
 }
