@@ -18,8 +18,9 @@ const (
 	COLOR_FG_END              = 150
 	COLOR_BG_START            = 200 //background
 	COLOR_BG_END              = 255
-	FONT_SIZE_DRIFT_DECREASE  = 3  // actual_size >= base_size - FONT_SIZE_DRIFT_DECREASE
-	FONT_SIZE_DRIFT_INCREASE  = 5  // actual_size <= base_size + FONT_SIZE_DRIFT_INCREASE
+	FONT_SIZE_DRIFT_DECREASE  = 3 // actual_size >= base_size - FONT_SIZE_DRIFT_DECREASE
+	FONT_SIZE_DRIFT_INCREASE  = 5 // actual_size <= base_size + FONT_SIZE_DRIFT_INCREASE
+	INTERFERENCE_LINE_COUNT   = 8
 	INTERFERENCE_LINE_X_SCALE = 10 //percentage
 	INTERFERENCE_LINE_Y_SCALE = 5
 )
@@ -61,7 +62,7 @@ func CreatePng(fontFile, data string, size, dpi, width, height int) (image.Image
 	if err != nil {
 		return nil, err
 	}
-	for i := 0; i < 10; i++ {
+	for i := 0; i < INTERFERENCE_LINE_COUNT; i++ {
 		x1, y1, x2, y2 := randomInterLinePos(width, height)
 		drawLine(img, randomFGColor(), x1, y1, x2, y2)
 	}
